@@ -18,9 +18,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
+    private var isFirstAPICall = true
     var currentGenreId: String? = null
         set(value) {
-            if (currentGenreId != value) {
+            if (isFirstAPICall || currentGenreId != value) {
                 field = value
                 getMoviesList()
             }
@@ -30,11 +31,8 @@ class MoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCa
     val moviesListState: StateFlow<UIState<List<Movie>>> =
         _moviesListState.asStateFlow()
 
-    init {
-        getMoviesList()
-    }
-
     private fun getMoviesList() {
+        isFirstAPICall = false
         _moviesListState.update { UIState(isLoading = true) }
         moviesUseCase(currentGenreId).onEach { result ->
             when (result) {
