@@ -1,6 +1,9 @@
 package com.movies.presentation.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,12 +15,13 @@ import com.movies.presentation.ui.screen.FiltersScreen
 import com.movies.presentation.ui.screen.MoviesScreen
 
 @Composable
-fun SetUpNavGraph(navController: NavHostController) {
+fun SetUpNavGraph(navController: NavHostController, paddingValues: PaddingValues) {
     val keyCurrentGenreId = "current_genre_id"
 
     NavHost(
         navController = navController,
-        startDestination = MOVIES_LIST_SCREEN
+        startDestination = MOVIES_LIST_SCREEN,
+        modifier = Modifier.padding(paddingValues)
     ) {
         composable(MOVIES_LIST_SCREEN) { MoviesScreen(navController) }
 
@@ -25,7 +29,8 @@ fun SetUpNavGraph(navController: NavHostController) {
             "$FILTER_SCREEN{$keyCurrentGenreId}",
             arguments = listOf(navArgument(keyCurrentGenreId) {
                 type = NavType.StringType
-                nullable = true})
+                nullable = true
+            })
         ) { backStackEntry ->
             val currentGenreId = backStackEntry.arguments?.getString(keyCurrentGenreId)
             FiltersScreen(navController, currentGenreId)

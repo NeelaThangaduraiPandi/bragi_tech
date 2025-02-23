@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.movies.R
 import com.movies.domain.model.Movie
 import com.movies.presentation.ui.helper.LoadImage
+import com.movies.presentation.ui.screen.support.BodyText
+import com.movies.presentation.ui.screen.support.TitleText
 
 @Composable
 fun MoviesGrid(movies: List<Movie>) {
@@ -47,7 +49,9 @@ fun MoviesGrid(movies: List<Movie>) {
                 )
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(5.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {

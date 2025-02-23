@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.movies.R
+import com.movies.presentation.ui.screen.support.NoDataFoundText
 import com.movies.presentation.viewModel.FiltersViewModel
 
 @Composable
@@ -64,19 +65,17 @@ fun FiltersScreen(navController: NavHostController, currentGenreId: String? = nu
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        Row {
+        Box(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             if (uiState.errorMessage != null) {
                 NoDataFoundText(uiState.errorMessage)
             }
             if (uiState.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .background(Color.White)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                CircularProgressIndicator()
             } else {
                 if (uiState.data != null) {
                     FiltersList(navController, currentGenreId, genres = uiState.data)

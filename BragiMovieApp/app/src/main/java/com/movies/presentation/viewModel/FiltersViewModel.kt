@@ -2,6 +2,7 @@ package com.movies.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.movies.domain.model.MovieGenre
 import com.movies.domain.state.ResponseState
 import com.movies.domain.useCase.MovieGenresUseCase
 import com.movies.domain.util.Constants
@@ -19,8 +20,8 @@ import javax.inject.Inject
 class FiltersViewModel @Inject constructor(private val genreUseCase: MovieGenresUseCase) :
     ViewModel() {
 
-    private val _genresListState = MutableStateFlow(UIState<List<Pair<Int, String>>>())
-    val genresListState: StateFlow<UIState<List<Pair<Int, String>>>> =
+    private val _genresListState = MutableStateFlow(UIState<List<MovieGenre>>())
+    val genresListState: StateFlow<UIState<List<MovieGenre>>> =
         _genresListState.asStateFlow()
 
     init {

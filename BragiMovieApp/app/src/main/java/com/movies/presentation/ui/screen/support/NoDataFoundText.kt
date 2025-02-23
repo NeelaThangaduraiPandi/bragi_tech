@@ -1,4 +1,4 @@
-package com.movies.presentation.ui.screen
+package com.movies.presentation.ui.screen.support
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
