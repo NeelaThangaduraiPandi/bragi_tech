@@ -1,5 +1,6 @@
 package com.movies.di
 
+import com.movies.data.remote.ApiConstants
 import com.movies.data.remote.IApiServices
 import com.movies.data.remote.RetryInterceptor
 import dagger.Module
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object AppNetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -25,9 +26,9 @@ object AppNetworkModule {
                 .addHeader("Accept", "application/json")
             chain.proceed(request.build())
         }
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(RetryInterceptor(maxRetries = 3))
+            .connectTimeout(ApiConstants.TIMEOUT_SECS, TimeUnit.SECONDS)
+            .readTimeout(ApiConstants.TIMEOUT_SECS, TimeUnit.SECONDS)
+            .addInterceptor(RetryInterceptor(maxRetries = ApiConstants.MAX_RETRIES))
             .build()
     }
 
@@ -37,7 +38,7 @@ object AppNetworkModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(ApiConstants.ROOT_URL)
             .build()
     }
 
