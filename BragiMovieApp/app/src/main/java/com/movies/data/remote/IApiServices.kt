@@ -1,8 +1,10 @@
 package com.movies.data.remote
 
+import com.movies.data.model.MovieDetailData
 import com.movies.data.remote.dto.MovieGenresListResponse
 import com.movies.data.remote.dto.MoviesListResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IApiServices {
@@ -19,4 +21,10 @@ interface IApiServices {
     suspend fun getMovieGenres(
         @Query("api_key") apiKey: String = ApiConstants.API_KEY
     ): MovieGenresListResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetailsById(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = ApiConstants.API_KEY
+    ): MovieDetailData
 }

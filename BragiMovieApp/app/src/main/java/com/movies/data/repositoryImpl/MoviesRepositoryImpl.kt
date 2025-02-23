@@ -1,5 +1,6 @@
 package com.movies.data.repositoryImpl
 
+import com.movies.data.model.MovieDetailData
 import com.movies.data.remote.IApiServices
 import com.movies.data.remote.dto.MovieGenresListResponse
 import com.movies.data.remote.dto.MoviesListResponse
@@ -13,5 +14,9 @@ class MoviesRepositoryImpl @Inject constructor(private val apiServices: IApiServ
 
     override suspend fun getMoviesGenres(): MovieGenresListResponse {
         return apiServices.getMovieGenres()
+    }
+
+    override suspend fun getMovieDetailsById(movieId: Int): MovieDetailData {
+        return apiServices.getMovieDetailsById(movieId = movieId)
     }
 }

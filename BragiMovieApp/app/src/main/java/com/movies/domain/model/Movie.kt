@@ -6,6 +6,6 @@ data class Movie(
     val overview: String,
     val imageURL: String,
     val rating: Float,
-    val revenue: Float,
-    val budget: Float
+    val revenue: String,
+    val budget: String
 )
