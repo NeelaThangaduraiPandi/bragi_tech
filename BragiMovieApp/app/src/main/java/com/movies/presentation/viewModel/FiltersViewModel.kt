@@ -2,9 +2,8 @@ package com.movies.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.movies.domain.model.Movie
 import com.movies.domain.state.ResponseState
-import com.movies.domain.useCase.MoviesUseCase
+import com.movies.domain.useCase.MovieGenresUseCase
 import com.movies.domain.util.Constants
 import com.movies.presentation.state.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,35 +16,29 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
-    var currentGenreId: String? = null
-        set(value) {
-            if (currentGenreId != value) {
-                field = value
-                getMoviesList()
-            }
-        }
+class FiltersViewModel @Inject constructor(private val genreUseCase: MovieGenresUseCase) :
+    ViewModel() {
 
-    private val _moviesListState = MutableStateFlow(UIState<List<Movie>>())
-    val moviesListState: StateFlow<UIState<List<Movie>>> =
-        _moviesListState.asStateFlow()
+    private val _genresListState = MutableStateFlow(UIState<List<Pair<Int, String>>>())
+    val genresListState: StateFlow<UIState<List<Pair<Int, String>>>> =
+        _genresListState.asStateFlow()
 
     init {
-        getMoviesList()
+        getMovieGenres()
     }
 
-    private fun getMoviesList() {
-        _moviesListState.update { UIState(isLoading = true) }
-        moviesUseCase(currentGenreId).onEach { result ->
+    private fun getMovieGenres() {
+        _genresListState.update { UIState(isLoading = true) }
+        genreUseCase().onEach { result ->
             when (result) {
                 is ResponseState.Success -> {
-                    _moviesListState.update {
+                    _genresListState.update {
                         UIState(isLoading = false, data = result.data)
                     }
                 }
 
                 is ResponseState.Error -> {
-                    _moviesListState.update {
+                    _genresListState.update {
                         UIState(
                             isLoading = false,
                             errorMessage = result.message ?: Constants.GENERIC_ERROR_MESSAGE

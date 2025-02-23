@@ -1,6 +1,5 @@
 package com.movies.presentation.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.movies.R
@@ -27,10 +27,8 @@ import com.movies.domain.model.Movie
 import com.movies.presentation.ui.helper.LoadImage
 
 @Composable
-fun MoviesGrid(
-    context: Context,
-    movies: List<Movie>
-) {
+fun MoviesGrid(movies: List<Movie>) {
+    val context = LocalContext.current
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(3),
@@ -38,7 +36,7 @@ fun MoviesGrid(
         verticalArrangement = Arrangement.Top,
         horizontalArrangement = Arrangement.Center
     ) {
-        itemsIndexed(movies) { index, item ->
+        itemsIndexed(movies) { _, item ->
             Card(
                 modifier = Modifier
                     .size(width = 100.dp, height = 230.dp)
@@ -55,11 +53,11 @@ fun MoviesGrid(
                 ) {
                     LoadImage(context = context, imageUrl = item.imageURL)
 
-                    TitleText(text = movies[index].title)
+                    TitleText(text = item.title)
                     Spacer(modifier = Modifier.height(5.dp))
-                    BodyText(text = stringResource(R.string.rating_prefix) + movies[index].rating)
-                    BodyText(text = stringResource(R.string.revenue_prefix) + movies[index].revenue)
-                    BodyText(text = stringResource(R.string.budget_prefix) + movies[index].budget)
+                    BodyText(text = stringResource(R.string.rating_prefix) + item.rating)
+                    BodyText(text = stringResource(R.string.revenue_prefix) + item.revenue)
+                    BodyText(text = stringResource(R.string.budget_prefix) + item.budget)
                 }
             }
         }

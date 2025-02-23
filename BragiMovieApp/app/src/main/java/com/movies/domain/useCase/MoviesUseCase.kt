@@ -12,10 +12,10 @@ import java.io.IOException
 import javax.inject.Inject
 
 class MoviesUseCase @Inject constructor(private val repository: MoviesRepository) {
-    operator fun invoke(): Flow<ResponseState<List<Movie>>> = flow {
+    operator fun invoke(withGenreId: String?): Flow<ResponseState<List<Movie>>> = flow {
         try {
             delay(500) // Added just to experience the loading state
-            val response = repository.getMoviesList()
+            val response = repository.getMoviesList(withGenreId)
             val moviesList = response.results.map {
                 val imageURL = ApiConstants.IMAGE_ROOT_URL + it.posterPath
                 Movie(

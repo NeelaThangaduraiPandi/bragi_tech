@@ -5,6 +5,8 @@
     <string name="revenue_prefix">Revenue: </string>
     <string name="budget_prefix">Budget: </string>
 
+    <string name="filters">Filters</string>
+
     <string name="movie_poster">Movie Poster</string>
     <string name="no_data_found">No Data Found!</string>
 </resources>

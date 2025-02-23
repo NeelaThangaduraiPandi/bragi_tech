@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -17,7 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,9 +27,12 @@ import com.movies.presentation.viewModel.MoviesViewModel
 
 @Composable
 fun MoviesScreen(navController: NavHostController) {
-    val context = LocalContext.current
     val viewModel: MoviesViewModel = hiltViewModel()
     val uiState = viewModel.moviesListState.collectAsState().value
+
+    val backStackEntry = navController.currentBackStackEntry
+    val savedStateHandle = backStackEntry?.savedStateHandle
+    viewModel.currentGenreId = savedStateHandle?.get("result")
 
     Box(
         modifier = Modifier
@@ -47,12 +47,13 @@ fun MoviesScreen(navController: NavHostController) {
             CircularProgressIndicator()
         } else {
             if (uiState.data != null) {
-                Box(modifier = Modifier
+                Box(
+                    modifier = Modifier
                         .fillMaxSize()
-                    .background(Color.LightGray),
+                        .background(Color.LightGray),
                     contentAlignment = Alignment.BottomEnd
                 ) {
-                    MoviesGrid(context = context, uiState.data)
+                    MoviesGrid(uiState.data)
                 }
             } else {
                 NoDataFoundText(stringResource(R.string.no_data_found))
@@ -60,11 +61,11 @@ fun MoviesScreen(navController: NavHostController) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                .padding(end = 30.dp, bottom = 50.dp),
+                    .padding(end = 30.dp, bottom = 50.dp),
                 contentAlignment = Alignment.BottomEnd
             ) {
                 FloatingActionButton(
-                    onClick = { navController.navigate(FILTER_SCREEN) },
+                    onClick = { navController.navigate("$FILTER_SCREEN${viewModel.currentGenreId}") },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     content = {
