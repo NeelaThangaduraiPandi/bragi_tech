@@ -72,8 +72,7 @@ fun MoviesScreen(navController: NavHostController) {
         ) {
             if (uiState.errorMessage != null) {
                 NoDataFoundText(uiState.errorMessage)
-            }
-            if (uiState.isLoading) {
+            } else if (uiState.isLoading) {
                 CircularProgressIndicator()
             } else {
                 if (uiState.data != null) {

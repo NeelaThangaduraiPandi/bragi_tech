@@ -17,12 +17,18 @@ class MovieGenresUseCase @Inject constructor(private val repository: MoviesRepos
                 MovieGenre(it.id, it.name)
             }
             emit(ResponseState.Success(data = genres))
-        } catch (ioException: IOException) {
-            emit(
-                ResponseState.Error(
-                    message = ioException.localizedMessage ?: Constants.GENERIC_ERROR_MESSAGE
-                )
-            )
+        } catch (exception: Exception) {
+
+            val errorMessage = when(exception) {
+                is IOException, is IllegalStateException -> {
+                    Constants.GENERIC_ERROR_MESSAGE
+                }
+                else -> {
+                    exception.localizedMessage ?: Constants.GENERIC_ERROR_MESSAGE
+                }
+            }
+
+            emit(ResponseState.Error(message = errorMessage))
         }
     }
 }
